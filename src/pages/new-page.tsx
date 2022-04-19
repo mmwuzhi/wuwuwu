@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery('posts', () => axios.get('/api'))
@@ -19,11 +19,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 function NewPage() {
   const { data, isLoading, isError } = useQuery<{ hello: string }>(
     'hello',
-    async () => (await axios.get<{ hello: string }>('api')).data,
+    async () => (await axios.get<{ hello: string }>('/api')).data,
     {
       initialData: { hello: 'test' },
     },
   )
+
   return (
     <>
       <Head>
@@ -31,7 +32,9 @@ function NewPage() {
       </Head>
       {isLoading ? <div>Loading...</div> : isError ? <div>error!</div> : <div>{data?.hello}</div>}
       <h2>
-        <Link href="/">Go Back Home Page</Link>
+        <Link href="/">
+          <a>Go Back Home Page</a>
+        </Link>
       </h2>
     </>
   )
