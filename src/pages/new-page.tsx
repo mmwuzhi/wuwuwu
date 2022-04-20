@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { GetServerSideProps } from 'next'
-import Link from 'next/link'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import Layout from '../components/layout'
 
@@ -28,11 +27,6 @@ function NewPage() {
   return (
     <Layout title="New Page">
       {isLoading ? <div>Loading...</div> : isError ? <div>error!</div> : <div>{data?.hello}</div>}
-      <h2>
-        <Link href="/">
-          <a>Go Back Home Page</a>
-        </Link>
-      </h2>
     </Layout>
   )
 }
