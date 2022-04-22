@@ -1,14 +1,64 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
+import styled from 'styled-components'
 import Layout from '../components/layout'
+import PostType from '../types/post'
+import { getSortedPostsData } from '../utils/post'
 
-const Home: NextPage = () => {
+interface Props {
+  allPostsData: PostType[]
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData()
+
+  return {
+    props: {
+      allPostsData,
+    },
+  }
+}
+
+const HeadingMd = styled.section`
+  font-size: 1.2rem;
+  line-height: 1.5;
+  padding-top: 1px;
+`
+const HeadingLg = styled.h2`
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 1rem 0;
+`
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`
+const ListItem = styled.li`
+  margin: 0 0 1.25rem;
+`
+
+const Home: NextPage<Props> = ({ allPostsData }) => {
   return (
     <Layout>
       <h1>Welcome to wuwuwu.cc</h1>
       <Link href="/new-page" passHref>
         <a>New Page</a>
       </Link>
+      <HeadingMd>
+        <HeadingLg>Blog</HeadingLg>
+        <List>
+          {allPostsData.map(({ id, date, title }) => (
+            <ListItem key={id}>
+              {title}
+              <br />
+              {id}
+              <br />
+              {date}
+            </ListItem>
+          ))}
+        </List>
+      </HeadingMd>
     </Layout>
   )
 }
