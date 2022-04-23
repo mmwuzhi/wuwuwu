@@ -5,6 +5,10 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import 'nprogress/nprogress.css'
 import '../utils/setNprogress'
+import 'moment/locale/ja'
+import moment from 'moment'
+
+moment.locale('ja')
 
 const GlobalStyle = createGlobalStyle`
   html,body {

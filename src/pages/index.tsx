@@ -1,23 +1,10 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import styled from 'styled-components'
+import Date from '../components/date'
 import Layout from '../components/layout'
 import PostType from '../types/post'
 import { getSortedPostsData } from '../utils/post'
-
-interface Props {
-  allPostsData: PostType[]
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
-
-  return {
-    props: {
-      allPostsData,
-    },
-  }
-}
 
 const HeadingMd = styled.section`
   font-size: 1.2rem;
@@ -41,20 +28,17 @@ const ListItem = styled.li`
 const Home: NextPage<Props> = ({ allPostsData }) => {
   return (
     <Layout>
-      <h1>Welcome to wuwuwu.cc</h1>
-      <Link href="/new-page" passHref>
-        <a>New Page</a>
-      </Link>
       <HeadingMd>
         <HeadingLg>Blog</HeadingLg>
         <List>
           {allPostsData.map(({ id, date, title }) => (
             <ListItem key={id}>
-              {title}
-              <br />
-              {id}
-              <br />
-              {date}
+              <Link href={`/posts/${id}`} passHref>
+                <a>{title}</a>
+              </Link>
+              <small>
+                <Date dateString={date} />
+              </small>
             </ListItem>
           ))}
         </List>
@@ -64,3 +48,17 @@ const Home: NextPage<Props> = ({ allPostsData }) => {
 }
 
 export default Home
+
+interface Props {
+  allPostsData: PostType[]
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData()
+
+  return {
+    props: {
+      allPostsData,
+    },
+  }
+}
