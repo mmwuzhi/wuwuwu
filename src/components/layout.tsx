@@ -22,9 +22,11 @@ export default function Layout({ title = 'ううう', children }: LayoutProps) {
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="I'm wuwuwu" />
-        <meta name="twitter:card" content="summary_large_image" />{' '}
+        <meta name="description" content="🥺" key="desc" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="og:description" content="coming soon" />
         <meta name="og:title" content={title} />
+        <meta name="google" content="notranslate" key="notranslate" />
       </Head>
       <main>{children}</main>
       <footer>
