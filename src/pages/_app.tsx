@@ -3,10 +3,11 @@ import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import moment from 'moment'
 import 'nprogress/nprogress.css'
 import '../utils/setNprogress'
 import 'moment/locale/ja'
-import moment from 'moment'
+import 'prismjs/themes/prism-tomorrow.css'
 
 moment.locale('ja')
 

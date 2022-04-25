@@ -7,18 +7,18 @@ date: '2022-04-25'
 
 1. husky
 
-   ```
+   ```bash
    yarn add husky -D
    ```
 
 2. lint-staged (eslint, prettier)
 
-   ```
+   ```bash
    yarn add lint-staged -D
    ```
 
 3. commitlint (commit message)
-   ```
+   ```bash
    yarn add @commitlint/config-conventional @commitlint/cli -D
    ```
 
@@ -37,7 +37,7 @@ date: '2022-04-25'
        - `npx husky add .husky/pre-commit "npx lint-staged --allow-empty $1"`
        - 或者直接创建`pre-commit`文件并复制粘贴以下内容
 
-         ```
+         ```bash
          #!/bin/sh
          . "$(dirname "$0")/_/husky.sh"
 
@@ -49,7 +49,7 @@ date: '2022-04-25'
        - `npx husky add .husky/commit-msg "npx commitlint --edit $1"`
        - 或者直接创建`commit-msg`文件并复制粘贴以下内容
 
-         ```
+         ```bash
          #!/bin/sh
          . "$(dirname "$0")/_/husky.sh"
 
@@ -59,14 +59,15 @@ date: '2022-04-25'
 2. lint-staged
 
    - 在`package.json`文件中增加配置 (根据需求自己改)
-     ```
+
+     ```json
      "lint-staged": {
        "*.{js,ts,tsx}": [
          "eslint",
          "prettier --write"
        ],
        "*.{ts,tsx}": [
-         "tsc"
+         "bash -c 'yarn type-check'"
        ],
        "*.{yml,yaml,json,css,scss,md}": [
          "prettier --write"
@@ -74,9 +75,27 @@ date: '2022-04-25'
      }
      ```
 
+     > **注**: 这里要注意，如果想用 tsc 检查 ts 的语法错误的话，需要在`"script"`里面加上下面这句
+     >
+     > ```json
+     > "type-check": "tsc"
+     > ```
+     >
+     > 这是因为如果像这样
+     >
+     > ```json
+     > "*.{ts,tsx}": [
+     >     "tsc"
+     > ],
+     > ```
+     >
+     > 直接用 lint-staged 调用的话，会导致`tsc`忽略掉`tsconfig.json`, 引发比如代码被编译导致 commit 失败
+     >
+     > **参考**: [husky+lint-staged で tsc するときに tsconfig.json が無視されてしまう時の対応](https://qiita.com/rpf-nob/items/454ff6cf135cee3dcab4)
+
 3. commit-lint
    - 在根目录添加`commitlint.config.js`文件并且复制粘贴以下内容 (根据需求自己改)
-     ```
+     ```js
      module.exports = {
        extends: ['@commitlint/config-conventional'],
        rules: {
