@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { GetServerSideProps } from 'next'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
-import Layout from '../components/layout'
+import Layout from '@/components/layout'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient()

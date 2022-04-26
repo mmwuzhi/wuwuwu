@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import moment from 'moment'
 import 'nprogress/nprogress.css'
-import '../utils/setNprogress'
+import '@/utils/setNprogress'
 import 'moment/locale/ja'
 import 'prismjs/themes/prism-tomorrow.css'
 

@@ -1,10 +1,10 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import styled from 'styled-components'
-import Date from '../components/date'
-import Layout from '../components/layout'
-import PostType from '../types/post'
-import { getSortedPostsData } from '../utils/post'
+import Date from '@/components/date'
+import Layout from '@/components/layout'
+import PostType from '@/types/post'
+import { getSortedPostsData } from '@/utils/post'
 
 const HeadingMd = styled.section`
   font-size: 1.2rem;

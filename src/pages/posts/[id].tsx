@@ -1,14 +1,13 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import styled from 'styled-components'
-import Date from '../../components/date'
-import Layout from '../../components/layout'
-import { getAllPostIds, getPostData } from '../../utils/post'
+import Layout from '@/components/layout'
+import Date from '@/components/date'
+import { getAllPostIds, getPostData } from '@/utils/post'
 
 const Title = styled.h1`
   font-size: 2rem;
   line-height: 1.3;
-  font-weight: 800;
   letter-spacing: -0.05rem;
   margin: 1rem 0;
 `
