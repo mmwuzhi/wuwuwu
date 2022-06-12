@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 const Time = styled.time`
@@ -10,12 +10,10 @@ interface Props {
 }
 
 const Date: React.FC<Props> = ({ dateString }) => {
-  const date = moment(dateString).format('YYYY MMMM Do')
+  const date = dayjs(dateString).format('YYYY MMMM D日 dddd')
   return (
     <div>
-      <Time dateTime={dateString}>
-        {date}
-      </Time>
+      <Time dateTime={dateString}>{date}</Time>
     </div>
   )
 }

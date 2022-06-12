@@ -3,13 +3,14 @@ import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import moment from 'moment'
+import { ClickToComponent } from 'click-to-react-component'
+import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 import '@/utils/setNprogress'
-import 'moment/locale/ja'
+import 'dayjs/locale/ja'
 import 'prismjs/themes/prism-tomorrow.css'
 
-moment.locale('ja')
+dayjs.locale('ja')
 
 const GlobalStyle = createGlobalStyle`
   html,body {
