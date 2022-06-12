@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "click-to-react-component": "^1.0.8",
     "dayjs": "^1.11.2",
     "gray-matter": "^4.0.3",
     "next": "12.1.5",

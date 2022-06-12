@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydrateState}>
+            <ClickToComponent />
             <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
           </Hydrate>
