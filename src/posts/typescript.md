@@ -110,3 +110,52 @@ type Obj = {
   c: string
 }
 ```
+
+## 模式匹配
+
+Typescript 类型的模式匹配是通过 extends 对类型参数做匹配，结果保存到通过 infer 声明的局部类型变量里，如果匹配就能从该局部变量里拿到提取出的类型
+
+- 数组
+
+```ts
+type Pop<T extends unknown[]> = T extends [...infer Rest, infer R] ? Rest : never
+
+// res = [1, 2]
+type res = Pop<[1, 2, 'a']>
+```
+
+- 递归实现字符串去行尾空格以及换行符
+
+```ts
+type TrimRight<Str extends string> = Str extends `${infer Rest}${' ' | '\t' | '\n'}`
+  ? TrimRight<Rest>
+  : Str
+
+// trimStr = 'abc
+type trimStr = TrimRight<`abc
+
+
+\n    \n`>
+```
+
+- 替换字符串中的一部分(replace)
+
+```ts
+type Replace<
+  Str extends string,
+  From extends string,
+  To extends string,
+> = Str extends `${infer Left}${From}${infer Right}` ? `${Left}${To}${Right}` : Str
+
+// res = 'My father is Tom'
+type res = Replace<'My name is Tom', 'name', 'father'>
+```
+
+- 获取函数的参数类型(返回数组)
+
+```ts
+type GetParams<Fn extends Function> = Fn extends (...prams: infer Params) => void ? Params : never
+
+// res = [a: number, b: boolean]
+type res = GetParams<(a: number, b: boolean) => string>
+```
