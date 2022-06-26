@@ -3,6 +3,54 @@ title: TypeScript笔记
 date: '2022-04-29'
 ---
 
+## ?
+
+在 key 后面的`?`表示此类型可为`undefined`, 在类型前面的`?`表示此类型可为`null`
+
+```ts
+interface Person {
+  // name的类型为string
+  name: string
+  // sex的类型为'm'或者'f'或者undefined
+  sex?: 'm' | 'f'
+  // address的类型为string或者null
+  address: ?string
+  // tel的类型为number或者undefined或者null
+  tel?: ?number
+}
+```
+
+在 key 后面的`-?`表示删除类型 key 后面的的`?`
+
+```ts
+type NonUndefined<T> = {
+  [key in keyof T]-?: T[key]
+}
+
+interface Mail {
+  gmail?: string
+  outlook: string | undefined
+  yahoo?: string | undefined
+  iCould: string
+}
+type NonUndefinedMail = NonUndefined<Mail>
+// 生成的类型如下
+type NonUndefinedMail = {
+  // 单纯的key后面加问号的undefined被去掉了
+  gmail: string
+  // 联合类型的undefined没有被去掉
+  outlook: string | undefined
+  // key后面加问号并且联合类型中有undefined的也被去掉了
+  yahoo: string
+  // 本来就是string的还是string
+  iCould: string
+}
+```
+
+说明类型后面的?和联合类型的`undefined`还是有区别的, 联合类型的 undefined 是说这个属性的值可以是`undefined`, 但是 key 如果没有加问号的话这个 key 还是必须存在的; 而 key 后面的问号既可以说这个属性是可选的, 又可以说明这个属性的值可以是`undefined`, 并且如果这个属性的类型被定义了联合类型的`undefined`的话, key 后面的`?`会将联合类型的`undefined`的效果覆盖掉
+
+所以使用的时候最好还是不要一块用, 还是要分工明确, 可选属性不管想不想给类型加上`undefined`都只用 key 后面加`?`; 不想让属性变成可选, 只是想加上`undefined`, 那就用联合类型, 不要图省事只给 Key 后面加`?`
+
 ## 接口
 
 - 接口可以定义很多次，所有定义的接口最终被自动合并为单个接口
@@ -109,6 +157,98 @@ type Obj = {
   b: string
   c: string
 }
+```
+
+## 常用工具类
+
+### `Partial<T>`
+
+将泛型中全部属性变为可选
+
+```ts
+type Partial<T> = {
+  [key in keyof T]?: T[P]
+}
+```
+
+### `Record<K, T>`
+
+快速定义对象
+
+```ts
+type Record<K extends keyof any, T> = {
+  [key in K]: T
+}
+```
+
+### `Pick<T, K>`
+
+将 T 类型中的 K 键列表提取出来，生成新的子键值对类型
+
+```ts
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P]
+}
+```
+
+### `Extract<T, U>`
+
+从 T 中提取出 U
+
+```ts
+type Extract<T, U> = T extends U ? T : never
+```
+
+### `Exclude<T, U>`
+
+将泛型中全部属性变为可选
+
+```ts
+type Exclude<T, U> = T extends U ? never : T
+```
+
+### `Omit<T, K>`
+
+去除类型 T 中包含 K 的键值对
+
+```ts
+type Omit = Pick<T, Exclude<keyof T, K>>
+```
+
+### `ReturnType<T>`
+
+获取 T 类型(函数)对应的返回值类型
+
+```ts
+type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any
+// 等于
+type ReturnType<T extends func> = T extends () => infer R ? R : any
+```
+
+### `Required<T>`
+
+将类型 T 中所有的属性变为必选项
+
+```ts
+type Required<T> = {
+  [P in keyof T]-?: T[P]
+}
+```
+
+### `NonNullable<T>`
+
+过滤掉联合类型中的 null 和 undefined 类型
+
+```ts
+type NonNullable<T> = T extends null | undefined ? never : T
+```
+
+### `Parameters<T>`
+
+获取函数的全部参数类型，以**元组类型**返回
+
+```ts
+type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never
 ```
 
 ## 模式匹配
