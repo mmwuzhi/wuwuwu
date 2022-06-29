@@ -28,6 +28,27 @@ const targetState = state.find((item) => item.key === 'b')
 targetState.value = [222]
 ```
 
+通过执行回调函数更改 state 的时候, 有一种特殊情况会导致回调函数虽然执行了但是 state 没有更改成功
+
+```jsx
+function Component1({ loading }) {
+  // loading的值从false变成true再变回false变化的时候会使Form被卸载之后再渲染
+  // 导致Form组件内部的state被重置
+  // 如果在Form里面义了更改Form的state用的回调函数 并且在别的组件使用了这个回调函数的话
+  // 回调函数会被执行 但是state不会被更改(因为要更改的state所在的组件已经被卸载掉了)
+  return <>{loading ? <></> : <Form />}</>
+}
+```
+
+遇到这种情况的话, 可以考虑以下写法
+
+```jsx
+function Component2({ loading }) {
+  // 如果想让组件在loading为true的时候也不被卸载的话可以用style
+  return <Form style={{ display: loading ? 'none' : 'flex' }} />
+}
+```
+
 ## `useRef`
 
 定义 ref 的时候初始值设置为`null`的话会被认为是只读 ref

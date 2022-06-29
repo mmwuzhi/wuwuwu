@@ -85,6 +85,29 @@ const age17PersonList = persons.reduce(
 )
 ```
 
+因为可以利用上一轮的结果进行这一轮的计算, 所以可以很简单地实现 compose 和 pipe
+
+```js
+// 执行顺序: 左 -> 右
+const pipe =
+  (...args) =>
+  (param) =>
+    args.reduce((result, fn) => fn(result), param)
+// 执行顺序: 左 <- 右
+const compose =
+  (...args) =>
+  (param) =>
+    args.reduceRight((result, fn) => fn(result), param)
+
+const add1 = (num) => num + 1
+const multiply2 = (num) => num * 2
+
+// 结果为 (2 + 1) * 2 = 6
+const resultPipe = pipe(add1, multiply2)(2)
+// 结果为 (2 * 2) + 1 = 5
+const resultCompose = compose(add1, multiply2)(2)
+```
+
 ## Tips
 
 - 好的代码是规避[副作用][]的
