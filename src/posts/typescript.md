@@ -3,6 +3,26 @@ title: TypeScript笔记
 date: '2022-04-29'
 ---
 
+## `/// <reference types="..." />`
+
+写在 d.ts 最顶端, 相当于导入指定 library 的声明文件
+
+```ts
+// index.d.ts
+/// <reference types="@reduxjs/toolkit/query/react"/>
+```
+
+没有写 reference 的时候, 输入 createApi 也不会出现自动补全和自动导入
+因为@reduxjs/toolkit/query/react 里面虽然存在 d.ts 但是没有在 library 的 package.json 里面指定的 dist/index.d.ts 里面导出, 所以 ts 的编译器无法自动识别@reduxjs/toolkit/query/react 的 d.ts 文件
+写了 reference 之后 ts 就知道要识别指定 library 的声明文件了, 所以就可以自动补全和自动导入了
+
+```ts
+// 业务逻辑ts文件
+import { createApi } from '@reduxjs/toolkit/dist/query/react'
+
+export const userApi = createApi
+```
+
 ## ?
 
 在 key 后面的`?`表示此类型可为`undefined`, 在类型前面的`?`表示此类型可为`null`
@@ -201,7 +221,7 @@ type Extract<T, U> = T extends U ? T : never
 
 ### `Exclude<T, U>`
 
-将泛型中全部属性变为可选
+去除联合类型 T 中的 U 类型
 
 ```ts
 type Exclude<T, U> = T extends U ? never : T

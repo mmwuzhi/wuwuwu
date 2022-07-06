@@ -64,7 +64,7 @@ git merge <name>
 
 ```bash
 # 参数为-D 则为强制删除
-git branch -d
+git branch -d <name>
 ```
 
 ### 删除远程分支
