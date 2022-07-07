@@ -8,7 +8,7 @@ interface LayoutProps {
 }
 
 const LayoutDiv = styled.div`
-  max-width: 36rem;
+  max-width: 50rem;
   padding: 0 1rem;
   margin: 3rem auto 6rem;
 `

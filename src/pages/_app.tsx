@@ -33,6 +33,11 @@ const GlobalStyle = createGlobalStyle`
     max-width: 100%;
     display: block;
   }
+  code {
+    color: #dc0f42;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;;
+    background-color: #f2f2f2;
+  }
 `
 
 const theme = {
