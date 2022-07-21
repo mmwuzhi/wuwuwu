@@ -124,6 +124,53 @@ export function useLoading() {
 }
 ```
 
+## props type
+
+### `React.ComponentProps`
+
+可以使用内置的泛型工具直接获取 props 的类型, 这样获取到的 props 的类型是真实的类型声明, 而使用 library 导出的类型声明有时候是不完整的(比如有的会缺少`children`)
+
+```ts
+import React from 'react'
+import { AnyComponent } from 'any-library'
+
+type AnyComponentProps = React.ComponentProps<typeof AnyComponent>
+```
+
+源码
+
+```ts
+type ComponentProps<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  T extends JSXElementConstructor<infer P>
+    ? P
+    : T extends keyof JSX.IntrinsicElements
+    ? JSX.IntrinsicElements[T]
+    : {}
+```
+
+### `React.ComponentRef`
+
+同样也有可以获取 ref 类型的泛型工具
+
+```ts
+import React from 'react'
+import { AnyRefComponent } from 'any-library'
+
+type AnyComponentRef = React.ComponentRef<typeof AnyRefComponent>
+```
+
+源码
+
+```ts
+type ComponentRef<T extends ElementType> = T extends NamedExoticComponent<
+  ComponentPropsWithoutRef<T> & RefAttributes<infer Method>
+>
+  ? Method
+  : ComponentPropsWithRef<T> extends RefAttributes<infer Method>
+  ? Method
+  : never
+```
+
 ## QA
 
 1. Q: function 组件和箭头函数组件
