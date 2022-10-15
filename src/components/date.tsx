@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Date: React.FC<Props> = ({ dateString }) => {
-  const date = dayjs(dateString).format('YYYY MMMM D日 dddd')
+  const date = dayjs(dateString).format('YYYY年MM月D日 (ddd)')
   return (
     <div>
       <Time dateTime={dateString}>{date}</Time>
