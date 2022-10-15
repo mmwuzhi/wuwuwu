@@ -87,6 +87,13 @@ git branch -m <oldName> <newName>
 git push -f origin
 ```
 
+更推荐用安全版本的强制 push
+加了`-with-lease`之后, 如果远端有其他人推送了新的提交, 那么推送将被拒绝, 这种拒绝和没有加 `--force` 参数时的拒绝是一样的
+
+```bash
+git push --force-with-lease
+```
+
 ## <span id="file">操作文件</span>
 
 ### 恢复暂存区的指定文件到工作区
