@@ -32,7 +32,7 @@ export default function Layout({ title = 'ううう', children }: LayoutProps) {
       <footer>
         <BackToHome>
           <Link href="/" passHref>
-            <a>wuwuwu.cc</a>
+            wuwuwu.cc
           </Link>
         </BackToHome>
       </footer>

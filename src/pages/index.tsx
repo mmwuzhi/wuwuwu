@@ -34,7 +34,7 @@ const Home: NextPage<Props> = ({ allPostsData }) => {
           {allPostsData.map(({ id, date, title }) => (
             <ListItem key={id}>
               <Link href={`/posts/${id}`} passHref>
-                <a>{title}</a>
+                {title}
               </Link>
               <small>
                 <Date dateString={date} />
