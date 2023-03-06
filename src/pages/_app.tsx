@@ -9,6 +9,7 @@ import 'nprogress/nprogress.css'
 import '@/utils/setNprogress'
 import 'dayjs/locale/ja'
 import 'prismjs/themes/prism-tomorrow.css'
+import '@code-hike/mdx/dist/index.css'
 
 dayjs.locale('ja')
 
@@ -31,6 +32,12 @@ const GlobalStyle = createGlobalStyle`
   }
   img {
     max-width: 100%;
+    display: block;
+  }
+  .ch-codeblock .ch-code-button {
+    display: none;
+  }
+  .ch-codeblock:hover .ch-code-button {
     display: block;
   }
   code {
