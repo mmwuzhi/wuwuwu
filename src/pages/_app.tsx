@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 import '@/utils/setNprogress'
 import 'dayjs/locale/ja'
-import 'prismjs/themes/prism-tomorrow.css'
 import '@code-hike/mdx/dist/index.css'
 
 dayjs.locale('ja')
