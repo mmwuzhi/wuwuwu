@@ -1,19 +1,18 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { remark } from 'remark'
-import remarkHtml from 'remark-html'
-import remarkPrism from 'remark-prism'
+import { bundleMDX } from 'mdx-bundler'
+import { remarkCodeHike } from '@code-hike/mdx'
+import theme from 'shiki/themes/one-dark-pro.json'
 
 const postsDirectory = path.join(process.cwd(), '/src/posts')
-console.log('process.cwd()', process.cwd())
 
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory)
   const allPostsData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
-    const id = fileName.replace(/\.md$/, '')
+    const id = fileName.replace(/\.mdx$/, '')
 
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName)
@@ -43,26 +42,46 @@ export function getSortedPostsData() {
 
 export function getAllPostIds() {
   const fileNames = fs.readdirSync(postsDirectory)
-  return fileNames.map((fileName) => ({ params: { id: fileName.replace(/\.md$/, '') } }))
+  return fileNames.map((fileName) => ({ params: { id: fileName.replace(/\.mdx$/, '') } }))
 }
 
-export async function getPostData(
-  id: string,
-): Promise<{ id: string; contentHtml: string; title: string; date: string }> {
-  const fullPath = path.join(postsDirectory, `${id}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf-8')
+export async function getPostData(id: string) {
+  const fullPath = path.join(postsDirectory, `${id}.mdx`)
+  const source = fs.readFileSync(fullPath, 'utf-8')
 
-  const matterResult = matter(fileContents)
+  // https://github.com/kentcdodds/mdx-bundler#nextjs-esbuild-enoent
+  if (process.platform === 'win32') {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      'node_modules',
+      'esbuild',
+      'esbuild.exe',
+    )
+  } else {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      'node_modules',
+      'esbuild',
+      'bin',
+      'esbuild',
+    )
+  }
 
-  const processedContent = await remark()
-    .use(remarkHtml, { sanitize: false })
-    .use(remarkPrism)
-    .process(matterResult.content)
-  const contentHtml = processedContent.toString()
+  const { frontmatter, code } = await bundleMDX({
+    source,
+    files: {},
+    mdxOptions(options) {
+      options.remarkPlugins = [
+        ...(options.remarkPlugins ?? []),
+        [remarkCodeHike, { theme }],
+      ]
+      return options
+    },
+  })
 
   return {
     id,
-    contentHtml,
-    ...(matterResult.data as { title: string; date: string }),
+    frontmatter,
+    code,
   }
 }

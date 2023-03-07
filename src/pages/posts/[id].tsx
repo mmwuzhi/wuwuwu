@@ -1,9 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import styled from 'styled-components'
+import { getMDXComponent } from 'mdx-bundler/client'
 import Layout from '@/components/layout'
 import Date from '@/components/date'
 import { getAllPostIds, getPostData } from '@/utils/post'
+import { useMemo } from 'react'
 
 const Title = styled.h1`
   font-size: 2rem;
@@ -13,15 +15,22 @@ const Title = styled.h1`
 `
 
 interface Props {
-  postData: { id: string; contentHtml: string; title: string; date: string }
+  postData: {
+    id: string
+    frontmatter: {
+      [key: string]: any
+    }
+    code: string
+  }
 }
 
 const Post: NextPage<Props> = ({ postData }) => {
+  const MDXComponent = useMemo(() => getMDXComponent(postData.code), [postData.code])
   return (
-    <Layout title={postData.title}>
-      <Title>{postData.title}</Title>
-      <Date dateString={postData.date} />
-      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+    <Layout title={postData.frontmatter.title}>
+      <Title>{postData.frontmatter.title}</Title>
+      <Date dateString={postData.frontmatter.date} />
+      <MDXComponent />
     </Layout>
   )
 }
@@ -34,7 +43,6 @@ interface Params extends ParsedUrlQuery {
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const paths = getAllPostIds()
-  debugger
   return {
     paths,
     fallback: false,
