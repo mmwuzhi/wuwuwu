@@ -69,12 +69,18 @@ export async function getPostData(id: string) {
 
   const { frontmatter, code } = await bundleMDX({
     source,
-    files: {},
+    cwd: path.join(process.cwd(), '/src'),
     mdxOptions(options) {
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         [remarkCodeHike, { theme }],
       ]
+
+      return options
+    },
+    esbuildOptions(options) {
+      options.platform = 'node'
+
       return options
     },
   })
