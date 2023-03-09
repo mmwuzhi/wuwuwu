@@ -1,11 +1,10 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import styled from 'styled-components'
-import { getMDXComponent } from 'mdx-bundler/client'
 import Layout from '@/components/layout'
 import Date from '@/components/date'
 import { getAllPostIds, getPostData } from '@/utils/post'
-import { useMemo } from 'react'
+import { MDXComponent } from '@/components/MDXComponent'
 
 const Title = styled.h1`
   font-size: 2rem;
@@ -25,12 +24,11 @@ interface Props {
 }
 
 const Post: NextPage<Props> = ({ postData }) => {
-  const MDXComponent = useMemo(() => getMDXComponent(postData.code), [postData.code])
   return (
     <Layout title={postData.frontmatter.title}>
       <Title>{postData.frontmatter.title}</Title>
       <Date dateString={postData.frontmatter.date} />
-      <MDXComponent />
+      <MDXComponent mdxSource={postData.code} />
     </Layout>
   )
 }
