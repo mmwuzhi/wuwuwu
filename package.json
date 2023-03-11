@@ -57,8 +57,11 @@
     "*.{ts,tsx}": [
       "bash -c 'pnpm type-check'"
     ],
-    "*.{yml,yaml,json,css,scss,md}": [
+    "*.{yml,yaml,json,css,scss}": [
       "prettier --write"
+    ],
+    "**/*.{md,mdx}": [
+      "node updateFrontmatter"
     ]
   }
 }
