@@ -19,11 +19,11 @@ export function getSortedPostsData() {
     const fileContents = fs.readFileSync(fullPath, 'utf8')
 
     // Use gray-matter to parse the post metadata section
-    const matterResult = matter(fileContents)
+    const frontMatter = matter(fileContents).data as MDXFrontMatter
 
-    const items: { [key: string]: string } = {
+    const items = {
       id,
-      ...matterResult.data,
+      ...frontMatter,
     }
     // Combine the data with the id
     return items
@@ -67,14 +67,11 @@ export async function getPostData(id: string) {
     )
   }
 
-  const { frontmatter, code } = await bundleMDX({
+  const { frontmatter, code } = await bundleMDX<MDXFrontMatter>({
     source,
     cwd: path.join(process.cwd(), '/src'),
     mdxOptions(options) {
-      options.remarkPlugins = [
-        ...(options.remarkPlugins ?? []),
-        [remarkCodeHike, { theme }],
-      ]
+      options.remarkPlugins = [...(options.remarkPlugins ?? []), [remarkCodeHike, { theme }]]
 
       return options
     },
