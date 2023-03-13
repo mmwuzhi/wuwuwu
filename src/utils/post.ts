@@ -71,7 +71,10 @@ export async function getPostData(id: string) {
     source,
     cwd: path.join(process.cwd(), '/src'),
     mdxOptions(options) {
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), [remarkCodeHike, { theme }]]
+      options.remarkPlugins = [
+        ...(options.remarkPlugins ?? []),
+        [remarkCodeHike, { theme, showCopyButton: true }],
+      ]
 
       return options
     },
