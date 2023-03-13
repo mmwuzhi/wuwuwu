@@ -5,6 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     appDir: true,
+    typedRoutes: true,
   },
   compiler: {
     // Enables the styled-components SWC transform
