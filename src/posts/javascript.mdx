@@ -1,6 +1,7 @@
 ---
 title: JavaScript笔记
 date: '2022-06-04'
+update: '2023-03-16'
 ---
 
 ## `Array.prototype.forEach`
@@ -112,5 +113,71 @@ const resultCompose = compose(add1, multiply2)(2)
 
 - 好的代码是规避[副作用][]的
 - 如果每次迭代包含了太多操作，将它们拆分到不同的函数中。
+
+## _`export`_ 的特殊用法
+
+**集合导出png,svg等非js文件**
+<CH.Section>
+这样导出可以使在别的js文件里导入时输入[关键字](focus://#1[13:17],3[15:19])之后编辑器/IDE便会自动提示可以import的文件
+```js
+export * as myImg from './img.png'
+// 或者
+export { * as myImg } from './img.png'
+```
+</CH.Section>
+
+**在a.js里面默认导出AnyComponent的默认导出**
+
+<CH.Code>
+```js MyComponent.js
+export { default } from './AnyComponent'
+```
+---
+```js b.js
+// 导入的时候默认为文件名
+import MyComponent from './MyComponent'
+
+...
+```
+</CH.Code>
+相当于
+<CH.Code>
+```js OtherComponent.js
+import AnyComponent from '/.AnyComponent'
+
+const OtherComponent = AnyComponent
+
+export default OtherComponent
+```
+---
+```js b.js
+// 导入的时候默认为定义的变量名
+// 上面定义的默认导出变量的变量名和文件名一样所以这里也和文件名一样
+import OtherComponent from './OtherComponent'
+
+...
+```
+</CH.Code>
+
+**默认导出和普通导出一起用**
+
+<CH.Code>
+```js foo.js
+const MY_NUM = 1
+const MY_STR = 'string'
+
+export { MY_NUM, MY_STR }
+
+export default function foo () {
+  return true
+}
+```
+---
+```js bar.js
+import foo, { MY_NUM, MY_STR } from './foo'
+
+...
+```
+</CH.Code>
 
 [副作用]: https://zh.m.wikipedia.org/zh-hans/%E5%89%AF%E4%BD%9C%E7%94%A8_(%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6)
