@@ -1,0 +1,21 @@
+---
+title: pnpm相关
+date: '2023-03-18'
+update: '2023-03-19'
+---
+
+## pnpm升级失败
+
+windows11执行 _`pn add -g @pnpm/exe`_ 之后，报错
+
+```powershell
+ WARN  The target bin directory already contains an exe called pnpm, so removing C:\Users\userName\AppData\Local\pnpm\pnpm.EXE
+ EPERM  EPERM: operation not permitted, unlink 'C:\Users\userName\AppData\Local\pnpm\pnpm.EXE'
+```
+
+[解决方法](https://github.com/pnpm/pnpm/issues/5700#issuecomment-1331954570):
+
+复制粘贴到命令行, 然后回车
+```powershell
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+```
