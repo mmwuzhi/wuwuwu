@@ -1,6 +1,7 @@
 ---
 title: git常用命令
 date: '2022-04-21'
+update: '2023-03-26'
 ---
 
 ## 基础
@@ -114,6 +115,65 @@ git checkout <commit> <file>
 
 ```bash
 git checkout .
+```
+
+## git的配置解决windows和linux的换行符不共通问题
+
+### core.autocrlf
+
+```bash
+git config --global core.autocrlf  [true | input | false]  # 全局设置
+git config --local core.autocrlf  [true | input | false] # 针对本项目设置
+```
+- `true` 自动完成[标准化](#standardization)与[转换](#transform)
+- `input` 只做[标准化](#standardization)操作，不做[转换](#transform)操作
+- `false` 提交与检出的代码都保持文件原有的换行符不变
+
+1. **<span id="standardization">标准化</span>** 指在提交代码到git数据库(本地库) 中将文本文件中的换行符CRLF转为LF的过程
+2. **<span id="transform">转换</span>** 指在检出Git数据库代码过程中将文本文件中的换行符LF转换为CRLF的过程
+
+### .gitattributes 文件
+
+1. 优先级高于core.autocrlf的设置，所以能够避免每个开发人员配置不同的问题
+2. text 设置的时候，转换自动转换到对应平台的换行符
+3. 行号高的设置会覆盖行号低的设置
+
+- text
+  - text 自动完成标准化与转换
+  - -text 不执行标准化与转换
+  - text=auto 根据 Git 决定是否需要执行标准化与转化
+  - 不设置 使用core.autocrlf配置决定是否执行标准化与转换
+- eol
+  - eol=lf 强制完成标准化，不执行转换（相当于指定转换为LF格式）
+  - eol=crlf 强制完成标准化，指定转换为CRLF格式
+- binary
+  - binary 二进制文件不参与标准化与转换
+  - 不设置 由 Git 决定是否为二进制文件
+
+
+每行基本形式：
+```bash
+filter attr1 attr2 ....
+```
+filter 代表匹配文件的通配符，在它后面跟着相应的属性，用空格间隔。
+
+例:
+```
+* text=auto
+
+*.js eol=lf
+*.jsx eol=lf
+*.ts eol=lf
+*.tsx eol=lf
+*.css eol=lf
+*.json eol=lf
+*.yml eol=lf
+*.yaml eol=lf
+*.svg eol=lf
+*.md eol=lf
+*.mdx eol=lf
+
+*.png binary
 ```
 
 ## 团队合作
