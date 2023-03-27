@@ -8,8 +8,8 @@ const nextConfig = {
     typedRoutes: true,
   },
   compiler: {
-    // Enables the styled-components SWC transform
-    styledComponents: true,
+    // Enables the emotion SWC transform
+    emotion: true,
   },
 }
 

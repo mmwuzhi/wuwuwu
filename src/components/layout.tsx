@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 interface LayoutProps {
   title?: string

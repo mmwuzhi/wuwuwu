@@ -7,7 +7,7 @@ interface Props {
 
 /**
  * https://github.com/kentcdodds/mdx-bundler/issues/100
- * used to fix react hooks linting warning when using styled-components and mdx-bundler
+ * used to fix react hooks linting warning when using emotion and mdx-bundler
  */
 export class MDXComponent extends React.Component<Props> {
   state = {

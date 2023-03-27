@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import Date from '@/components/date'
 import Layout from '@/components/layout'
 import PostType from '@/types/post'

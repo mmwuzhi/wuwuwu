@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import Layout from '@/components/layout'
 import Date from '@/components/date'
 import { getAllPostIds, getPostData } from '@/utils/post'

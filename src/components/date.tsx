@@ -1,5 +1,5 @@
+import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import styled from 'styled-components'
 
 const Time = styled.time`
   color: #666;

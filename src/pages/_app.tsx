@@ -2,22 +2,24 @@ import type { AppProps } from 'next/app'
 import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { css, Global } from '@emotion/react'
 import { ClickToComponent } from 'click-to-react-component'
 import dayjs from 'dayjs'
 import 'nprogress/nprogress.css'
 import '@/utils/setNprogress'
 import 'dayjs/locale/ja'
 import '@code-hike/mdx/dist/index.css'
+import MantineThemeProvider from '@/components/MantineThemeProvider'
 
 dayjs.locale('ja')
 
-const GlobalStyle = createGlobalStyle`
-  html,body {
+const global = css`
+  html,
+  body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+      Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     line-height: 1.6;
     font-size: 18px;
     box-sizing: border-box;
@@ -41,23 +43,17 @@ const GlobalStyle = createGlobalStyle`
   }
   code {
     color: #dc0f42;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     background-color: #f2f2f2;
   }
 `
-
-const theme = {
-  colors: {
-    primary: '#0070f3',
-  },
-}
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
   return (
     <>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
+      <Global styles={global} />
+      <MantineThemeProvider>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydrateState}>
             <ClickToComponent />
@@ -65,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
           </Hydrate>
         </QueryClientProvider>
-      </ThemeProvider>
+      </MantineThemeProvider>
     </>
   )
 }
