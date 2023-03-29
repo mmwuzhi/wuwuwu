@@ -11,7 +11,7 @@ const MantineThemeProvider: React.FC<Props> = ({ children }) => {
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
         {children}
       </MantineProvider>
     </ColorSchemeProvider>

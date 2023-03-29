@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styled from '@emotion/styled'
+import ThemeSwitch from './ThemeSwitch'
+import Flashlight from '@/components/Flashlight'
 
 interface LayoutProps {
   title?: string
@@ -28,6 +30,8 @@ export default function Layout({ title = 'ううう', children }: LayoutProps) {
         <meta name="og:title" content={title} />
         <meta name="google" content="notranslate" key="notranslate" />
       </Head>
+      <Flashlight />
+      <ThemeSwitch />
       <main>{children}</main>
       <footer>
         <BackToHome>
