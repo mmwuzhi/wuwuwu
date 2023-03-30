@@ -7,7 +7,7 @@ interface SpotlightProps {
   left?: number
 }
 const Spotlight = styled.div<SpotlightProps>`
-  position: absolute;
+  position: fixed;
   display: ${(props) => (props.theme.colorScheme === 'dark' ? 'inline' : 'none')};
   top: ${(props) => props.top + 'px' ?? '50%'};
   left: ${(props) => props.left + 'px' ?? '50%'};
@@ -23,6 +23,7 @@ const Spotlight = styled.div<SpotlightProps>`
 const Flashlight = () => {
   const { colorScheme } = useMantineColorScheme()
   const [position, setPosition] = useState({ left: 0, top: 0 })
+
   useEffect(() => {
     if (colorScheme === 'light') return
     const handleMouseMove = (e: MouseEvent) => {
@@ -31,7 +32,9 @@ const Flashlight = () => {
 
     window.addEventListener('mousemove', handleMouseMove)
 
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [colorScheme])
   return <Spotlight top={position.top} left={position.left} />
 }
