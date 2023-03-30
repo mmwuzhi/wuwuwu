@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react'
 interface SpotlightProps {
   top?: number
   left?: number
+  isShow: boolean
 }
 const Spotlight = styled.div<SpotlightProps>`
   position: fixed;
-  display: ${(props) => (props.theme.colorScheme === 'dark' ? 'inline' : 'none')};
+  display: ${(props) => (props.isShow ? 'inline' : 'none')};
   top: ${(props) => props.top + 'px' ?? '50%'};
   left: ${(props) => props.left + 'px' ?? '50%'};
   width: 300px;
@@ -23,9 +24,16 @@ const Spotlight = styled.div<SpotlightProps>`
 const Flashlight = () => {
   const { colorScheme } = useMantineColorScheme()
   const [position, setPosition] = useState({ left: 0, top: 0 })
+  const [isShow, setIsShow] = useState(false)
 
   useEffect(() => {
-    if (colorScheme === 'light') return
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    if (colorScheme === 'light' || isMobile) {
+      setIsShow(false)
+      return
+    } else {
+      setIsShow(true)
+    }
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ left: e.clientX, top: e.clientY })
     }
@@ -36,7 +44,8 @@ const Flashlight = () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [colorScheme])
-  return <Spotlight top={position.top} left={position.left} />
+
+  return <Spotlight top={position.top} left={position.left} isShow={isShow} />
 }
 
 export default Flashlight
