@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { type ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import Flashlight from '../Flashlight'
 
 interface Props {
   children: React.ReactElement
@@ -12,6 +13,7 @@ const MantineThemeProvider: React.FC<Props> = ({ children }) => {
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+        <Flashlight />
         {children}
       </MantineProvider>
     </ColorSchemeProvider>
