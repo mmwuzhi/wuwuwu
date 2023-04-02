@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import styled from '@emotion/styled'
-import ThemeSwitch from './ThemeSwitch'
+import HeaderButtonGroup from './HeaderButtonGroup'
 
 interface LayoutProps {
   title?: string
@@ -11,7 +11,7 @@ interface LayoutProps {
 const LayoutDiv = styled.div`
   max-width: 50rem;
   padding: 0 1rem;
-  margin: 3rem auto 6rem;
+  margin: 1rem auto 6rem;
 `
 const BackToHome = styled.div`
   margin: 3rem 0 0;
@@ -29,7 +29,7 @@ export default function Layout({ title = 'ううう', children }: LayoutProps) {
         <meta name="og:title" content={title} />
         <meta name="google" content="notranslate" key="notranslate" />
       </Head>
-      <ThemeSwitch />
+      <HeaderButtonGroup />
       <main>{children}</main>
       <footer>
         <BackToHome>
