@@ -1,7 +1,7 @@
 ---
 title: react笔记
 date: '2022-04-21'
-update: '2022-06-25'
+update: '2023-04-02'
 ---
 
 ## `useState`
@@ -170,6 +170,58 @@ type ComponentRef<T extends ElementType> = T extends NamedExoticComponent<
   ? Method
   : never
 ```
+
+## `forwardRef`
+
+<CH.Section>
+想在父组件使用子组件中定义的函数或者取得子组件中定义的值的时候，可以在子组件里定义[第二个参数(_`ref`_)](focus://6[78:80],12[23:25])和[_`useImperativeHandle`_](focus://12[3:21])将内部的函数或者值传递给外部
+
+然后使用[_`forwardRef`_](focus://20[16:26,41])包住目标子组件
+
+```tsx ChildComponent.tsx
+// 这里定义想传递给外部的函数或者值的type
+export interface ChildComponentHandlers {
+  handleSomeEvent: () => void
+  someData: number
+}
+const ChildComponent: ForwardRefRenderFunction<ChildComponentHandlers> = (_, ref) => {
+  const [someData, setSomeData] = useState(0)
+  const handleSomeEvent = () => {
+    // 逻辑
+  }
+  // 第二个参数的返回值是一个对象，想传递给外部的函数或者值要放在这个对象里面
+  useImperativeHandle(ref, () => ({
+    handleSomeEvent,
+    someData,
+  }))
+  return (
+    // jsx
+  )
+}
+export default forwardRef(ChildComponent)
+```
+这里将组件的type定义为[_`ForwardRefRenderFunction<ChildComponentHandlers>`_](focus://6[23:70])之后再在[_`export default`_](focus://20[1:14])的时候包住子组件，是因为如果在定义子组件的地方直接用 _`forwardRef`_ 包住的话，eslint会提示**component definition is missing display name forwardref**
+</CH.Section>
+
+<CH.Section>
+修改完子组件之后，就可以在父组件将[_`useRef`_](focus://#2[29:34])定义的[_`ref`_](focus://#2[9:25])传递给子组件，然后就可以用用这个[_`ref`_](focus://#2[9:25])来调用子组件内定义的函数或者获取子组件内部定义的值了
+```tsx ParentComponent.tsx
+const ParentComponent = () => {
+  const childComponentRef = useRef<ChildComponentHandlers>(null)
+
+  useEffect(()=> {
+    // 像这样获取子组件内部定义的值
+    const childSomeData = childComponentRef.current!.someData
+    // 像这样调用子组件内部的方法
+    childComponentRef.current.handleSomeEvent()
+  }, [])
+
+  return (
+    <ChildComponent ref={childComponentRef} />
+  )
+}
+```
+</CH.Section>
 
 ## QA
 
