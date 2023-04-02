@@ -1,4 +1,3 @@
-import isMobile from '@/utils/isMobile'
 import styled from '@emotion/styled'
 import {
   forwardRef,
@@ -37,7 +36,6 @@ const Flashlight: ForwardRefRenderFunction<FlashlightHandlers> = (_, ref) => {
   const [isShow, setIsShow] = useState(false)
 
   const handleToggleFlashlight = useCallback((e: MouseEvent) => {
-    if (isMobile()) return
     setPosition({ left: e.clientX, top: e.clientY })
     setIsShow((prev) => !prev)
   }, [])
@@ -45,7 +43,7 @@ const Flashlight: ForwardRefRenderFunction<FlashlightHandlers> = (_, ref) => {
   useImperativeHandle(ref, () => ({ handleToggleFlashlight }))
 
   useEffect(() => {
-    if (!isShow || isMobile()) return
+    if (!isShow) return
 
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ left: e.clientX, top: e.clientY })
