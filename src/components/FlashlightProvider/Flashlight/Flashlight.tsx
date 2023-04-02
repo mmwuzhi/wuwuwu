@@ -1,6 +1,12 @@
 import styled from '@emotion/styled'
-import { useMantineColorScheme } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import {
+  forwardRef,
+  type ForwardRefRenderFunction,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 
 interface SpotlightProps {
   top?: number
@@ -21,19 +27,27 @@ const Spotlight = styled.div<SpotlightProps>`
   pointer-events: none;
 `
 
-const Flashlight = () => {
-  const { colorScheme } = useMantineColorScheme()
+export interface FlashlightHandlers {
+  handleToggleFlashlight: (event: MouseEvent) => void
+}
+
+const Flashlight: ForwardRefRenderFunction<FlashlightHandlers> = (_, ref) => {
   const [position, setPosition] = useState({ left: 0, top: 0 })
   const [isShow, setIsShow] = useState(false)
 
+  const handleToggleFlashlight = useCallback((e: MouseEvent) => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    if (isMobile) return
+    setPosition({ left: e.clientX, top: e.clientY })
+    setIsShow((prev) => !prev)
+  }, [])
+
+  useImperativeHandle(ref, () => ({ handleToggleFlashlight }))
+
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-    if (colorScheme === 'light' || isMobile) {
-      setIsShow(false)
-      return
-    } else {
-      setIsShow(true)
-    }
+    if (!isShow || isMobile) return
+
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ left: e.clientX, top: e.clientY })
     }
@@ -43,9 +57,9 @@ const Flashlight = () => {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [colorScheme])
+  }, [isShow])
 
   return <Spotlight top={position.top} left={position.left} isShow={isShow} />
 }
 
-export default Flashlight
+export default forwardRef(Flashlight)

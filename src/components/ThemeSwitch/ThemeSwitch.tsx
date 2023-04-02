@@ -1,10 +1,17 @@
 import React from 'react'
 import { Group, Switch, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { IconSun, IconMoonStars } from '@tabler/icons-react'
+import { useFlashlightRef } from '../FlashlightProvider'
 
 const ThemeSwitch: React.FC = () => {
   const theme = useMantineTheme()
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const { toggleColorScheme } = useMantineColorScheme()
+  const flashlightRef = useFlashlightRef()
+
+  const handleSwitchClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    flashlightRef?.current?.handleToggleFlashlight?.(e.nativeEvent)
+    toggleColorScheme()
+  }
 
   return (
     <Group position="center">
@@ -13,7 +20,7 @@ const ThemeSwitch: React.FC = () => {
         color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
         onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />}
         offLabel={<IconMoonStars size="1rem" stroke={2.5} color={theme.colors.blue[6]} />}
-        onClick={() => toggleColorScheme()}
+        onClick={handleSwitchClick}
       />
     </Group>
   )
