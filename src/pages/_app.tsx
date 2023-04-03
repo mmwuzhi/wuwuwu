@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { css, Global } from '@emotion/react'
@@ -50,6 +50,12 @@ const global = css`
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
+
+  useEffect(() => {
+    // temporarily resolve the Flash of Unstyled Content(FOUC) issue
+    document.documentElement.style.opacity = '1'
+  }, [])
+
   return (
     <>
       <Global styles={global} />
