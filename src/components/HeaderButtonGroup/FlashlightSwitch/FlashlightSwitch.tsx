@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActionIcon, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Tooltip, useMantineTheme } from '@mantine/core'
 import { MdOutlineFlashlightOff, MdOutlineFlashlightOn } from 'react-icons/md'
 import { useFlashlightRef } from '@/components/FlashlightProvider'
 import { useToggle } from '@mantine/hooks'
@@ -22,14 +22,16 @@ const FlashlightSwitch: React.FC = () => {
   }
 
   return (
-    <ActionIcon
-      color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
-      variant="default"
-      size="md"
-      onClick={handleSwitchClick}
-    >
-      {spotlightIcon[spotlightStatus]}
-    </ActionIcon>
+    <Tooltip label="开启/关闭手电筒">
+      <ActionIcon
+        color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
+        variant="default"
+        size="md"
+        onClick={handleSwitchClick}
+      >
+        {spotlightIcon[spotlightStatus]}
+      </ActionIcon>
+    </Tooltip>
   )
 }
 
