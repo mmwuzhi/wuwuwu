@@ -5,7 +5,7 @@ import ThemeSwitch from './ThemeSwitch'
 
 const HeaderButtonGroup: React.FC = () => {
   return (
-    <Group position="right">
+    <Group>
       <FlashlightSwitch />
       <ThemeSwitch />
     </Group>

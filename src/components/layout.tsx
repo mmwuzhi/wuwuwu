@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import styled from '@emotion/styled'
-import HeaderButtonGroup from './HeaderButtonGroup'
+import { AppShell } from '@mantine/core'
+import Header from './Header'
 
 interface LayoutProps {
   title?: string
@@ -12,9 +12,6 @@ const LayoutDiv = styled.div`
   max-width: 50rem;
   padding: 0 1rem;
   margin: 1rem auto 6rem;
-`
-const BackToHome = styled.div`
-  margin: 3rem 0 0;
 `
 
 export default function Layout({ title = 'ううう', children }: LayoutProps) {
@@ -29,15 +26,7 @@ export default function Layout({ title = 'ううう', children }: LayoutProps) {
         <meta name="og:title" content={title} />
         <meta name="google" content="notranslate" key="notranslate" />
       </Head>
-      <HeaderButtonGroup />
-      <main>{children}</main>
-      <footer>
-        <BackToHome>
-          <Link href="/" passHref>
-            wuwuwu.cc
-          </Link>
-        </BackToHome>
-      </footer>
+      <AppShell header={<Header />}>{children}</AppShell>
     </LayoutDiv>
   )
 }
