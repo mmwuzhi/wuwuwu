@@ -20,7 +20,7 @@ const Spotlight = styled.div<SpotlightProps>`
   left: ${(props) => props.left + 'px' ?? '50%'};
   width: 300px;
   height: 300px;
-  z-index: 1;
+  z-index: 999;
   box-shadow: 0 0 0 2560px rgba(0, 0, 0, 0.92), 0 0 20px 0px #000 inset;
   border-radius: 100%;
   transform: translateX(-50%) translateY(-50%);
