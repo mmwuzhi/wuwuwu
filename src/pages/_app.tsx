@@ -21,7 +21,7 @@ const global = css`
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
       Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     line-height: 1.6;
-    font-size: 18px;
+    font-size: 1rem;
     box-sizing: border-box;
   }
   a {
@@ -48,7 +48,7 @@ const global = css`
   }
 `
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
@@ -72,4 +72,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default App
