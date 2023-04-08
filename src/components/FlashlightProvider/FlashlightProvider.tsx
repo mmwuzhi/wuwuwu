@@ -1,22 +1,26 @@
-import React, { createContext, useContext, useRef } from 'react'
-import Flashlight, { type FlashlightHandlers } from './Flashlight'
+import React, { createContext } from 'react'
+import Flashlight from './Flashlight'
+import EventEmitter, { BaseEvents } from '@/utils/EventEmitter'
+import useEventEmitter from '@/hooks/useEventEmitter'
 
 interface Props {
   children: React.ReactElement
 }
 
-const FlashlightRefContext = createContext<React.RefObject<FlashlightHandlers> | null>(null)
+interface FlashlightEvents extends BaseEvents {
+  toggle: [{ left: number; top: number }]
+}
+
+const FlashlightRefContext = createContext<EventEmitter<FlashlightEvents>>(null as any)
 
 const FlashlightProvider: React.FC<Props> = ({ children }) => {
-  const flashlightRef = useRef<FlashlightHandlers>(null)
-
   return (
-    <FlashlightRefContext.Provider value={flashlightRef}>
-      <Flashlight ref={flashlightRef} />
+    <FlashlightRefContext.Provider value={new EventEmitter<FlashlightEvents>()}>
+      <Flashlight />
       {children}
     </FlashlightRefContext.Provider>
   )
 }
 
-export const useFlashlightRef = () => useContext(FlashlightRefContext)
+export const useFlashlightEventEmitter = () => useEventEmitter(FlashlightRefContext)
 export default FlashlightProvider

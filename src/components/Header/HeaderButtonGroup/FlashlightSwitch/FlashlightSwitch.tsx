@@ -1,7 +1,7 @@
 import React from 'react'
 import { ActionIcon, Tooltip, useMantineTheme } from '@mantine/core'
 import { MdOutlineFlashlightOff, MdOutlineFlashlightOn } from 'react-icons/md'
-import { useFlashlightRef } from '@/components/FlashlightProvider'
+import { useFlashlightEventEmitter } from '@/components/FlashlightProvider'
 import { useToggle } from '@mantine/hooks'
 
 type SpotlightStatus = 'on' | 'off'
@@ -9,11 +9,11 @@ type SpotlightStatus = 'on' | 'off'
 const FlashlightSwitch: React.FC = () => {
   const [spotlightStatus, toggle] = useToggle<SpotlightStatus>(['off', 'on'])
   const theme = useMantineTheme()
-  const flashlightRef = useFlashlightRef()
+  const { emit } = useFlashlightEventEmitter()
 
   const handleSwitchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     toggle()
-    flashlightRef?.current?.handleToggleFlashlight?.(e.nativeEvent)
+    emit('toggle', { left: e.nativeEvent.clientX, top: e.nativeEvent.clientY })
   }
 
   const spotlightIcon: Record<SpotlightStatus, React.ReactNode> = {

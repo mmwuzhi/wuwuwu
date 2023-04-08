@@ -1,12 +1,6 @@
 import styled from '@emotion/styled'
-import {
-  forwardRef,
-  type ForwardRefRenderFunction,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react'
+import { useEffect, useState } from 'react'
+import { useFlashlightEventEmitter } from '../FlashlightProvider'
 
 interface SpotlightProps {
   top?: number
@@ -27,20 +21,15 @@ const Spotlight = styled.div<SpotlightProps>`
   pointer-events: none;
 `
 
-export interface FlashlightHandlers {
-  handleToggleFlashlight: (event: MouseEvent) => void
-}
-
-const Flashlight: ForwardRefRenderFunction<FlashlightHandlers> = (_, ref) => {
+const Flashlight: React.FC = () => {
   const [position, setPosition] = useState({ left: 0, top: 0 })
   const [isShow, setIsShow] = useState(false)
+  const { useListener } = useFlashlightEventEmitter()
 
-  const handleToggleFlashlight = useCallback((e: MouseEvent) => {
-    setPosition({ left: e.clientX, top: e.clientY })
+  useListener('toggle', (currPosition) => {
+    setPosition(currPosition)
     setIsShow((prev) => !prev)
-  }, [])
-
-  useImperativeHandle(ref, () => ({ handleToggleFlashlight }))
+  })
 
   useEffect(() => {
     if (!isShow) return
@@ -59,4 +48,4 @@ const Flashlight: ForwardRefRenderFunction<FlashlightHandlers> = (_, ref) => {
   return <Spotlight top={position.top} left={position.left} isShow={isShow} />
 }
 
-export default forwardRef(Flashlight)
+export default Flashlight
