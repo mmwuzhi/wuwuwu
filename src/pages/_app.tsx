@@ -10,6 +10,7 @@ import '@/utils/setNprogress'
 import 'dayjs/locale/ja'
 import '@code-hike/mdx/dist/index.css'
 import MantineThemeProvider from '@/components/MantineThemeProvider'
+import FlashlightProvider from '@/components/FlashlightProvider/FlashlightProvider'
 
 dayjs.locale('ja')
 
@@ -60,13 +61,15 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <Global styles={global} />
       <MantineThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydrateState}>
-            <ClickToComponent />
-            <Component {...pageProps} />
-            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-          </Hydrate>
-        </QueryClientProvider>
+        <FlashlightProvider>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydrateState}>
+              <ClickToComponent />
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+            </Hydrate>
+          </QueryClientProvider>
+        </FlashlightProvider>
       </MantineThemeProvider>
     </>
   )
