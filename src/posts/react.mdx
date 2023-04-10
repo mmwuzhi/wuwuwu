@@ -1,7 +1,7 @@
 ---
 title: react笔记
 date: '2022-04-21'
-update: '2023-04-02'
+update: '2023-04-10'
 ---
 
 ## `useState`
@@ -50,6 +50,38 @@ function Component2({ loading }) {
 ```
 
 ## `useRef`
+
+<CH.Section>
+[_`ref.current`_](focus://17[7:17],24[18:28]) 就算放到 [_`useEffect`_](focus://14[3:11]) 的deps里或者作为组件的props，也不会在变化的时候触发组件重新渲染或者 [_`useEffect`_](focus://14[3:11]) 的第一个参数的再执行
+
+```tsx
+const Text = ({val})=> {
+  // 点击按钮之后这条log也不会被打印
+  console.log(val)
+  return (
+    <div>{val}</div>
+  )
+}
+
+const TestRef = () => {
+  const ref = useRef('test')
+
+  useEffect(()=> {
+    // 点击按钮之后这条log也不会被打印
+    console.log(ref.current)
+  }, [ref.current])
+
+  return (
+    <>
+      <button onClick={()=> ref.current = 'new val'}>
+        click me
+      </button>
+      <Text val={ref.current} />
+    </>
+  )
+}
+```
+</CH.Section>
 
 定义 ref 的时候初始值设置为`null`的话会被认为是只读 ref
 
