@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   return (
     <MantineHeader height="3rem">
       <Group position="apart" p="xs">
-        <Link href="/" passHref>
+        <Link href="/" passHref aria-label="go to homepage">
           <Text>wuwuwu.cc</Text>
         </Link>
         <HeaderButtonGroup />

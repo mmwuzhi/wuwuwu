@@ -24,6 +24,7 @@ const ThemeSwitch: React.FC = () => {
         variant="default"
         size="md"
         onClick={() => toggleColorScheme()}
+        aria-label={`switch theme to ${theme.colorScheme} mode`}
       >
         {themeIcon[theme.colorScheme]}
       </ActionIcon>

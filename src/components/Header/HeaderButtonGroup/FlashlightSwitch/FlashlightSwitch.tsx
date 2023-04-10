@@ -28,6 +28,7 @@ const FlashlightSwitch: React.FC = () => {
         variant="default"
         size="md"
         onClick={handleSwitchClick}
+        aria-label={`turn ${spotlightStatus === 'on' ? 'off' : 'on'} flashlight`}
       >
         {spotlightIcon[spotlightStatus]}
       </ActionIcon>
