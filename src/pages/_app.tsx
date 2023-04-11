@@ -11,6 +11,7 @@ import 'dayjs/locale/ja'
 import '@code-hike/mdx/dist/index.css'
 import MantineThemeProvider from '@/components/MantineThemeProvider'
 import FlashlightProvider from '@/components/FlashlightProvider/FlashlightProvider'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 dayjs.locale('ja')
 
@@ -58,7 +59,7 @@ function App({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <>
+    <ErrorBoundary>
       <Global styles={global} />
       <MantineThemeProvider>
         <FlashlightProvider>
@@ -71,7 +72,7 @@ function App({ Component, pageProps }: AppProps) {
           </QueryClientProvider>
         </FlashlightProvider>
       </MantineThemeProvider>
-    </>
+    </ErrorBoundary>
   )
 }
 
