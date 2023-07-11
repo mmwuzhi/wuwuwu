@@ -1,0 +1,28 @@
+---
+title: Expo入门
+date: '2023-07-11'
+update: '2023-07-11'
+---
+
+## 用Expo CLI创建空项目
+<CH.Section>
+其中[_`-t`_](focus://1[32:33],3[37:38],5[37:38])是指套用expo提供的template的意思
+```bash expo-cli.sh mark=1,3,5
+npx create-expo-app <app-name> -t
+# or
+yarn dlx create-expo-app <app-name> -t
+# or
+pnpm dlx create-expo-app <app-name> -t
+```
+</CH.Section>
+<CH.Section>
+执行之后会出现如下选项, 这里我选的是[_`Navigation (TypeScript)`_](focus://4)
+```bash
+? Choose a template: » - Use arrow-keys. Return to submit.
+    Blank - a minimal app as clean as an empty canvas
+    Blank (TypeScript) - blank app with TypeScript enabled
+>   Navigation (TypeScript) - File-based routing with TypeScript enabled
+    Blank (Bare) - blank app with the native code exposed (expo prebuild)
+```
+</CH.Section>
+选择之后按下回车, 程序会自动生成一个空项目, 空项目所在文件夹名为"app-name"
