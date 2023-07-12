@@ -1,7 +1,7 @@
 ---
 title: pnpm相关
 date: '2023-03-18'
-update: '2023-03-19'
+update: '2023-07-12'
 ---
 
 ## pnpm升级失败
@@ -18,4 +18,24 @@ windows11执行 _`pn add -g @pnpm/exe`_ 之后，报错
 复制粘贴到命令行, 然后回车
 ```powershell
 iwr https://get.pnpm.io/install.ps1 -useb | iex
+```
+
+## 用pnpm执行npx命令
+```bash
+pnpm dlx <command>
+```
+
+## 将pnpm作为node版本管理工具使用
+
+```bash
+# latest是最新版本 另外可以用lts版本(lts) 或者指定版本(e.g. 16 or 14.21.3)
+# -g意思是global
+# 使用指定版本nodejs(如果没有被安装则先安装再使用)
+pnpm env use -g latest
+# 列出本地安装版本
+pnpm env list
+# 列出远程可用nodejs版本
+pnpm env list --remote
+# 删除指定版本
+pnpm env remove -g 14.21.3
 ```
