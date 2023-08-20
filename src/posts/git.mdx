@@ -1,7 +1,7 @@
 ---
 title: git常用命令
 date: '2022-04-21'
-update: '2023-03-26'
+update: '2023-08-20'
 ---
 
 ## 基础
@@ -54,6 +54,22 @@ git checkout -b <name>
 因为 git checkout 不仅仅只可以操作分支, 甚至还可以[操作文件](#file), 所以尽量不要用 git checkout 来操作分支(会很危险)
 
 ### 合并指定分支到当前分支
+
+开启zdiff3
+
+Git 早在 2008 年就提供 diff3，用于冲突展示时额外提供该区域的原始内容（两个分支公共祖先节点在此区域的内容），帮助更好的合并冲突。在 [2022 年 Q1 发布的 Git 2.35](https://github.blog/2022-01-24-highlights-from-git-2-35/) ，提供了一个新的选项 zdiff3，进一步优化了diff3 的展现。
+```bash
+# 项目配置
+git config merge.conflictstyle zdiff3
+# 删除项目配置
+git config --unset merge.conflictstyle
+# 使用默认配置
+git config merge.conflictstyle merge
+# 全局配置
+git config --global merge.conflictstyle zdiff3
+# 删除全局配置
+git config --global --unset merge.conflictstyle
+```
 
 ```bash
 git merge <name>
