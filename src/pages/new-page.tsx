@@ -1,32 +1,37 @@
 import axios from 'axios'
-import { GetServerSideProps } from 'next'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
 import Layout from '@/components/layout'
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery('posts', () => axios.get('/api'))
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  }
-}
+import { Button, Input } from '@mantine/core'
+import { useState } from 'react'
 
 function NewPage() {
-  const { data, isLoading, isError } = useQuery<{ hello: string }>(
-    'hello',
-    async () => (await axios.get<{ hello: string }>('/api')).data,
-    {
-      initialData: { hello: 'test' },
-    },
-  )
+  const [url, setUrl] = useState('')
+  const [shortUrl, setShortUrl] = useState('')
+
+  const handleClick = async () => {
+    const data = (await axios.post<{ shortUrl: string }>('/api/hello', { url: '12aaa3' })).data
+    setShortUrl(data.shortUrl)
+  }
 
   return (
     <Layout title="New Page">
-      {isLoading ? <div>Loading...</div> : isError ? <div>error!</div> : <div>{data?.hello}</div>}
+      <Input.Wrapper>
+        <div>url: </div>
+        <Input
+          placeholder="input url"
+          value={url}
+          onChange={(event) => setUrl(event.currentTarget.value)}
+          mt="md"
+        />
+        <Button onClick={handleClick}>submit</Button>
+      </Input.Wrapper>
+      {!!shortUrl && (
+        <>
+          short url:
+          <a href={shortUrl}>
+            <div>{shortUrl}</div>
+          </a>
+        </>
+      )}
     </Layout>
   )
 }
