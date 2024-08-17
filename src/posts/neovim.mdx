@@ -1,0 +1,117 @@
+---
+title: 'neovim, vscode-neovim的安装及配置'
+date: '2024-08-16'
+update: '2024-08-17'
+---
+
+首先, 为什么要用neovim呢? vscode的vim插件不行吗?
+
+当然可以了! 但是vscode的vim插件充其量是一个vim的模拟器, 而不是真正的vim
+
+所以经常会用起来卡卡的, 尤其是打字的时候偶尔还会出错
+
+而vscode-neovim则是把输入模式以外托管给neovim, 所以相当于是原生neovim, 可以直接适用`init.lua`和neovim的插件设定, 并且十分流畅
+
+## 下载
+```sh
+# 其他系统参考以下链接安装
+# https://github.com/neovim/neovim/blob/master/INSTALL.md
+# homebrew
+brew install neovim
+
+# 创建配置文件
+mkdir -p ~/.config/nvim && touch $_/init.lua
+```
+
+## vscode-neovim设置
+**注意: neovim的配置想适用在vscode上的话需要重启vscode**
+
+**注意2: 安装过vscode的vim的话可能会导致冲突, 可以先关掉或者直接删了吧(反正以后也用不到了)**
+
+安装完vscode-neovim插件之后会一般蹦出来下面两个提示
+
+- Failed to start nvim
+不用管, 之后配置完路径就好了
+
+- No affinity assigned to vscode-neovim
+点yes, 大概是可以通过多线程来提升插件的性能(忘记点了也没关系, 之后配置也可以加上去)
+
+vscode的配置里面添加如下设置
+```json setting.json
+// 上面的第二个提示就是自动添加这条, 所以上面点完yes的话可以无视这条
+"extensions.experimental.affinity": {
+  "asvetliakov.vscode-neovim": 1
+},
+// macos的path设定
+// neovim的安装路径一般是`/usr/bin/nvim`, 但是linux发行版不同有可能安装路径也不同
+// 所以建议保险起见执行以下命令确认路径
+// which nvim
+"vscode-neovim.neovimExecutablePaths.darwin": "/usr/bin/nvim",
+// 同上, init.lua的路径一般是`/Users/xxx(用户名)/.config/nvim/init.lua`
+// 但是我这里是`/home/mmwuzhi/.config/nvim`, 所以建议保险起见执行以下命令确认路径
+// cd ~/.config/nvim && pwd
+"vscode-neovim.neovimInitVimPaths.darwin": "/home/xxx/.config/nvim/init.lua",
+// 开启wsl的neovim
+"vscode-neovim.useWSL": true,
+// linux/wsl的path设定
+"vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+"vscode-neovim.neovimInitVimPaths.linux": "/home/xxx/.config/nvim/init.lua",
+```
+
+## `init.lua`的推荐配置
+好了接下来就没有windows和linux和macos的区别了, 大家的设置都一样了!
+
+文件夹配置如下
+> - init.lua
+> - lua
+>   - config
+>     - keymaps.lua
+>     - options.lua
+>     - lazy.lua
+>   - plugins
+>     - plugin1.lua
+>     - plugin2.lua
+
+因为装了lazy.vim所以会有`lazy.lua`和lazy.vim的设定, 没有的可以无视掉相关设定
+
+不过比较适合懒人, 建议有时间的话可以试试 [官方文档](https://www.lazyvim.org/installation)
+
+```lua init.lua
+-- 插件管理器用了lazy.vim 没有用的话可以删掉
+require("config.lazy")
+
+require("config.options")
+require("config.keymaps")
+```
+```lua ./lua/config/keymaps.lua
+local keymap = vim.keymap
+local opts = { noremap = true, silent = true }
+
+keymap.set('i', 'jj', '<Esc>', opts)
+
+keymap.set('n', '+', '<C-a>', opts)
+keymap.set('n', '-', '<C-x>', opts)
+
+-- 和‘:x’一样但是如果开着大写锁定的话会不小心触发 比较危险所以关掉
+keymap.set("n", "ZZ", "<NOP>")
+-- 同上 和':q!'一样
+keymap.set("n", "ZQ", "<NOP>")
+
+if vim.g.vscode then
+  keymap.set('', '<Space>', '<Nop>')
+end
+```
+```lua ./lua/config/options.lua
+vim.g.mapleader = " "
+vim.opt.clipboard = "unnamedplus"
+```
+
+但是在vscode的输入模式没办法套用上init.lua的配置, 所以又需要在vscode的配置里面添加一行了
+```json
+"vscode-neovim.compositeKeys": {
+  "jj": {
+    "command": "vscode-neovim.escape"
+  }
+}
+```
+现在你的neovim已经比vscode-vim好用很多了, 该试试了\(
