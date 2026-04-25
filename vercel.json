@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/ledger/:path*",
-      "destination": "https://ledger-plum-kappa.vercel.app/ledger/:path*"
-    }
-  ]
-}
